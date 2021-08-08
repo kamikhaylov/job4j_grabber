@@ -5,7 +5,7 @@
 # job4j_grabber
 ## Проект - Агрегатор вакансий
 
-Используемые технологии: java, maven, travis, junit, jacoco, checkstyle, codecov.
+Используемые технологии: Java, Maven, Travis, Junit, Jacoco, Checkstyle, Codecov, Quartz.
 Приложение собирается в jar.
 
 Описание.
