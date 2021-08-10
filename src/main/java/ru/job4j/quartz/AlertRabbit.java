@@ -20,7 +20,9 @@ public class AlertRabbit implements AutoCloseable {
     }
 
     public void init() {
-        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+        try (InputStream in = AlertRabbit.class
+                .getClassLoader()
+                .getResourceAsStream("rabbit.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("rabbit.driver-class-name"));
@@ -50,7 +52,9 @@ public class AlertRabbit implements AutoCloseable {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             System.out.println("Rabbit runs here ...");
-            Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("store");
+            Connection connection = (Connection) context.getJobDetail()
+                    .getJobDataMap()
+                    .get("store");
             try (PreparedStatement statement = connection.prepareStatement(
                     "insert into rabbit(created_date) values (?)")) {
                 statement.setLong(1, System.currentTimeMillis());
