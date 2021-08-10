@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/kamikhaylov/job4j_grabber.svg?branch=master)](https://travis-ci.com/kamikhaylov/job4j_grabber)
-[![codecov](https://codecov.io/gh/kamikhaylov/job4j_grabber/branch/main/graph/badge.svg?token=415ADKU381)](https://codecov.io/gh/kamikhaylov/job4j_grabber)
+[![codecov](https://codecov.io/gh/kamikhaylov/job4j_grabber/branch/master/graph/badge.svg?token=415ADKU381)](https://codecov.io/gh/kamikhaylov/job4j_grabber)
 
 
 # job4j_grabber
