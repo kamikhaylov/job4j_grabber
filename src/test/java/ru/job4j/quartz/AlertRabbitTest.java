@@ -23,10 +23,10 @@ public class AlertRabbitTest {
                 "postgres",
                 "12345678",
                 "org.postgresql.Driver");
-        List<String> expected = List.of(rabbit.getUrl(),
-                rabbit.getUsername(),
-                rabbit.getPassword(),
-                rabbit.getDriver());
+        List<String> expected = List.of(rabbit.getConfig().getProperty("rabbit.url"),
+                rabbit.getConfig().getProperty("rabbit.username"),
+                rabbit.getConfig().getProperty("rabbit.password"),
+                rabbit.getConfig().getProperty("rabbit.driver-class-name"));
         assertThat(result, is(expected));
     }
 }

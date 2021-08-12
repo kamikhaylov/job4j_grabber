@@ -13,44 +13,28 @@ import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit implements AutoCloseable {
+    private Properties config;
     private Connection connection;
-    private String driver;
-    private String url;
-    private String username;
-    private String password;
-    private int interval;
 
     public Connection getConnection() {
         return connection;
     }
 
-    public String getDriver() {
-        return driver;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
+    public Properties getConfig() {
+        return config;
     }
 
     public int getInterval() {
-        return interval;
+        return Integer.parseInt(config.getProperty("rabbit.interval"));
     }
 
     public void init() {
         try {
-            Class.forName(getDriver());
+            Class.forName(config.getProperty("rabbit.driver-class-name"));
             connection = DriverManager.getConnection(
-                    getUrl(),
-                    getUsername(),
-                    getPassword()
+                    config.getProperty("rabbit.url"),
+                    config.getProperty("rabbit.username"),
+                    config.getProperty("rabbit.password")
             );
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -90,13 +74,8 @@ public class AlertRabbit implements AutoCloseable {
         try (InputStream in = AlertRabbit.class
                 .getClassLoader()
                 .getResourceAsStream(properties)) {
-            Properties config = new Properties();
+            config = new Properties();
             config.load(in);
-            driver = config.getProperty("rabbit.driver-class-name");
-            url = config.getProperty("rabbit.url");
-            username = config.getProperty("rabbit.username");
-            password = config.getProperty("rabbit.password");
-            interval = Integer.parseInt(config.getProperty("rabbit.interval"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
