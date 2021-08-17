@@ -3,10 +3,12 @@ package ru.job4j.utils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm");
+    private Locale locale = new Locale("ru");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm", locale);
 
     public DateTimeFormatter getFormatter() {
         return formatter;
@@ -68,7 +70,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private String getDateToString(String result, LocalDate localDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy", locale);
         String todayFormat = localDate.format(formatter);
         StringBuffer sb = new StringBuffer(result);
         result = sb.insert(0, todayFormat).toString();

@@ -48,6 +48,8 @@ public class SqlRuDateTimeParserTest {
         String date = "02 фев 19, 22:30";
         String result = "02 февр. 19, 22:30";
         String expected = sqlRuDateTimeParser.parse(date).format(formatter);
+        System.out.println(result);
+        System.out.println(expected);
         assertThat(result, is(expected));
     }
 
