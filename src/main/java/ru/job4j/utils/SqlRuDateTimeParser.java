@@ -1,12 +1,27 @@
 package ru.job4j.utils;
 
+import static java.util.Map.entry;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Map;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
-
+    private static final Map<String, String> MONTHS = Map.ofEntries(
+            entry("янв", "янв."),
+            entry("фев", "февр."),
+            entry("мар", "мар."),
+            entry("апр", "апр."),
+            entry("май", "мая"),
+            entry("июн", "июн."),
+            entry("июл", "июл."),
+            entry("авг", "авг."),
+            entry("сен", "сент."),
+            entry("окт", "окт."),
+            entry("ноя", "нояб."),
+            entry("дек", "дек.")
+    );
     private Locale locale = new Locale("ru");
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm", locale);
 
@@ -21,74 +36,41 @@ public class SqlRuDateTimeParser implements DateTimeParser {
             dateStr = convertTodayToDate(dateStr);
         } else if (dateStr.startsWith("вчера,")) {
             dateStr = convertYesterdayToDate(dateStr);
-        } else if (dateStr.contains("фев")) {
-            dateStr = convertFebToDate(dateStr);
-        } else if (dateStr.contains("май")) {
-            dateStr = convertMayToDate(dateStr);
-        } else if (dateStr.contains("сен")) {
-            dateStr = convertSepToDate(dateStr);
-        } else if (dateStr.contains("ноя")) {
-            dateStr = convertNovToDate(dateStr);
         } else {
-            dateStr = addFirstSymbol(dateStr);
-            dateStr = addPointInMonth(dateStr, 6);
+            dateStr = convertMonth(dateStr);
         }
-        LocalDateTime result = LocalDateTime.parse(dateStr, getFormatter());
-        return result;
+        return LocalDateTime.parse(dateStr, getFormatter());
     }
 
     private String convertTodayToDate(String date) {
         String dateStr = date.substring(7);
-        LocalDate localDate = LocalDate.now();
-        return getDateToString(dateStr, localDate);
+        return getDateToString(dateStr, LocalDate.now());
     }
 
     private String convertYesterdayToDate(String date) {
         String dateStr = date.substring(5);
-        LocalDate localDate = LocalDate.now().minusDays(1);
-        return getDateToString(dateStr, localDate);
+        return getDateToString(dateStr, LocalDate.now().minusDays(1));
     }
 
-    private String convertFebToDate(String date) {
-        StringBuffer sb = new StringBuffer(addFirstSymbol(date));
-        return sb.insert(6, "р.").toString();
-    }
-
-    private String convertMayToDate(String date) {
-        StringBuffer sb = new StringBuffer(addFirstSymbol(date));
-        return sb.replace(5, 6, "я") .toString();
-    }
-
-    private String convertSepToDate(String date) {
-        StringBuffer sb = new StringBuffer(addFirstSymbol(date));
-        return sb.insert(6, "т.").toString();
-    }
-
-    private String convertNovToDate(String date) {
-        StringBuffer sb = new StringBuffer(addFirstSymbol(date));
-        return sb.insert(6, "б.").toString();
+    private String convertMonth(String date) {
+        date = addFirstSymbol(date);
+        StringBuilder sb = new StringBuilder(date);
+        return sb.replace(3, 6, MONTHS.get(date.substring(3, 6))).toString();
     }
 
     private String getDateToString(String result, LocalDate localDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy", locale);
-        String todayFormat = localDate.format(formatter);
-        StringBuffer sb = new StringBuffer(result);
-        result = sb.insert(0, todayFormat).toString();
-        return result;
+        StringBuilder sb = new StringBuilder(result);
+        return sb.insert(0, localDate.format(formatter)).toString();
     }
 
     private String addFirstSymbol(String date) {
         String day = date.substring(0, date.indexOf(" "));
         String result = date;
         if (day.length() != 2) {
-            StringBuffer sb = new StringBuffer(date);
+            StringBuilder sb = new StringBuilder(date);
             result = sb.insert(0, "0").toString();
         }
         return result;
-    }
-
-    private String addPointInMonth(String date, int indexPoint) {
-        StringBuffer sb = new StringBuffer(date);
-        return sb.insert(indexPoint, ".").toString();
     }
 }
