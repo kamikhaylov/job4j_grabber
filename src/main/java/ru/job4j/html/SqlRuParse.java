@@ -20,6 +20,10 @@ public class SqlRuParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
+    public DateTimeParser getDateTimeParser() {
+        return dateTimeParser;
+    }
+
     @Override
     public List<Post> list(String link) throws IOException {
         Document doc = Jsoup.connect(link).get();
@@ -35,7 +39,7 @@ public class SqlRuParse implements Parse {
     @Override
     public Post detail(String link) throws IOException {
         LoadingParts load = new LoadingParts();
-        return load.loading(link);
+        return load.loading(link, getDateTimeParser());
     }
 
     public static void main(String[] args) throws Exception {
@@ -54,7 +58,7 @@ public class SqlRuParse implements Parse {
                 System.out.println();
             }
         }
-        SqlRuDateTimeParser sqlParser = new SqlRuDateTimeParser();
+        DateTimeParser sqlParser = new SqlRuDateTimeParser();
         SqlRuParse parse = new SqlRuParse(sqlParser);
         List<Post> listPost = parse.list("https://www.sql.ru/forum/job-offers/");
         for (Post post : listPost) {

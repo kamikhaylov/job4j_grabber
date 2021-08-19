@@ -1,6 +1,8 @@
 package ru.job4j.model;
 
 import org.junit.Test;
+import ru.job4j.utils.DateTimeParser;
+import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -12,9 +14,10 @@ public class LoadingPartsTest {
     @Test
     public void whenLinkThenPost() throws IOException {
         LoadingParts load = new LoadingParts();
+        DateTimeParser dateTimeParser = new SqlRuDateTimeParser();
         String link = "https://www.sql.ru/forum/1325330/"
                 + "lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
-        Post expected = load.loading(link);
+        Post expected = load.loading(link, dateTimeParser);
         Post result = new Post(
                 "Лиды BE/FE/senior cистемные аналитики/QA и DevOps, Москва, до 200т.",
                 link,
