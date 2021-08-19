@@ -1,4 +1,4 @@
-package ru.job4j.grabber;
+package ru.job4j.store;
 
 import ru.job4j.html.SqlRuParse;
 import ru.job4j.model.Post;
