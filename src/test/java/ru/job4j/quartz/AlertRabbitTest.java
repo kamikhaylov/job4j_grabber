@@ -11,7 +11,7 @@ public class AlertRabbitTest {
     public void whenPropertiesThen5() {
         AlertRabbit rabbit = new AlertRabbit();
         rabbit.readSetting("rabbit.properties");
-        int result = 5;
+        int result = 600;
         assertThat(result, is(rabbit.getInterval()));
     }
 
