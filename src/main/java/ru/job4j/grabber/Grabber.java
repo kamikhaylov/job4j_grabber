@@ -6,10 +6,12 @@ import ru.job4j.html.Parse;
 import ru.job4j.html.SqlRuParse;
 import ru.job4j.model.Post;
 import ru.job4j.quartz.AlertRabbit;
+import ru.job4j.store.PsqlStore;
 import ru.job4j.store.Store;
 import ru.job4j.utils.SqlRuDateTimeParser;
 import java.io.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -19,7 +21,7 @@ public class Grabber implements Grab {
     private final Properties cfg = new Properties();
 
     public Store store() {
-        return null;
+        return new PsqlStore(cfg);
     }
 
     public Scheduler scheduler() throws SchedulerException {
@@ -65,7 +67,9 @@ public class Grabber implements Grab {
             try {
                 List<Post> posts = parse.list("https://www.sql.ru/forum/job-offers");
                 for (Post post : posts) {
-                    store.save(post);
+                    if (post.getTitle().toLowerCase().contains("java")) {
+                        store.save(post);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
