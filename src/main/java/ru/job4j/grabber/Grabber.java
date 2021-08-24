@@ -80,7 +80,8 @@ public class Grabber implements Grab {
 
     public void web(Store store) {
         new Thread(() -> {
-            try (ServerSocket server = new ServerSocket(Integer.parseInt(cfg.getProperty("rabbit.port")))) {
+            try (ServerSocket server = new ServerSocket(
+                    Integer.parseInt(cfg.getProperty("rabbit.port")))) {
                 while (!server.isClosed()) {
                     Socket socket = server.accept();
                     try (OutputStream out = socket.getOutputStream()) {
