@@ -12,7 +12,6 @@ import ru.job4j.utils.SqlRuDateTimeParser;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
