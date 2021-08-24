@@ -1,5 +1,6 @@
 package ru.job4j.store;
 
+import org.postgresql.util.PSQLException;
 import ru.job4j.html.SqlRuParse;
 import ru.job4j.model.Post;
 import ru.job4j.quartz.AlertRabbit;
@@ -40,6 +41,9 @@ public class PsqlStore implements Store, AutoCloseable {
             statement.setString(3, post.getDescription());
             statement.setTimestamp(4, Timestamp.valueOf(post.getCreated()));
             statement.execute();
+        } catch (PSQLException psqlException) {
+            System.out.println("В базе обнаружен дубликат, запись не произведена: ");
+            System.out.println(post.toString() + System.lineSeparator());
         } catch (Exception e) {
             e.printStackTrace();
         }
